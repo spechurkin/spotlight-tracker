@@ -1,0 +1,44 @@
+<form class="spotlight-roster-shell" autocomplete="off">
+    <header class="spotlight-roster-header">
+        <h2>{{localize "spotlight-tracker.Roster.Heading"}}</h2>
+        <p>{{localize "spotlight-tracker.Roster.Hint"}}</p>
+        <label class="spotlight-roster-search">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <input type="search" data-roster-search placeholder="{{localize 'spotlight-tracker.Roster.Search'}}">
+        </label>
+        <div class="spotlight-selection-actions">
+            <button type="button" data-selection-action="all">{{localize "spotlight-tracker.Roster.SelectAll"}}</button>
+            <button type="button" data-selection-action="none">{{localize
+                    "spotlight-tracker.Roster.SelectNone"}}</button>
+        </div>
+    </header>
+
+    {{#if hasActors}}
+        <div class="spotlight-roster-list">
+            {{#each actors}}
+                <label
+                        class="spotlight-roster-row"
+                        data-actor-row
+                        data-search-text="{{name}} {{type}} {{linkedPlayers}}"
+                >
+                    <input type="checkbox" name="actors.{{actorId}}" {{#if checked}}checked{{/if}}>
+                    <img src="{{img}}" alt="">
+                    <span class="spotlight-roster-name">
+        <strong>{{name}}</strong>
+        <small>{{type}}{{#if linkedPlayers}} · {{linkedPlayers}}{{/if}}</small>
+      </span>
+                    <i class="fas fa-user" title="{{localize 'spotlight-tracker.Roster.PlayerCharacter'}}"></i>
+                </label>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="spotlight-roster-empty">{{localize "spotlight-tracker.Roster.NoActors"}}</div>
+    {{/if}}
+
+    <footer>
+        <button type="submit">
+            <i class="fas fa-floppy-disk" aria-hidden="true"></i>
+            {{localize "spotlight-tracker.Roster.Save"}}
+        </button>
+    </footer>
+</form>

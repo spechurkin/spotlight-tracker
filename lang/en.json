@@ -1,0 +1,107 @@
+{
+  "spotlight-tracker": {
+    "Controls": {
+      "Open": "Open Spotlight Tracker"
+    },
+    "Settings": {
+      "PlayersCanView": {
+        "Name": "Let players view the tracker",
+        "Hint": "Players can open the window and see spotlight distribution live. Only a GM can control it."
+      },
+      "OpenTracker": {
+        "Name": "Spotlight Tracker",
+        "Hint": "Open the character spotlight time tracker.",
+        "Label": "Open tracker"
+      },
+      "ManageRoster": {
+        "Name": "Tracker roster",
+        "Hint": "Choose which assigned player characters should have their spotlight time tracked.",
+        "Label": "Configure roster"
+      }
+    },
+    "Keybindings": {
+      "Open": {
+        "Name": "Open Spotlight Tracker",
+        "Hint": "Open the spotlight time tracker. Assign a key in Configure Controls."
+      }
+    },
+    "Notifications": {
+      "GmOnly": "Only a GM can control the tracker.",
+      "ViewDisabled": "The GM has disabled player access to the tracker.",
+      "RosterSaved": "Tracker roster saved.",
+      "InvalidTimer": "Set a timer between 1 second and 180 minutes. Seconds must be from 0 to 59.",
+      "TimerExpired": "{character}'s spotlight time has expired.",
+      "NothingToArchive": "No spotlight time has been recorded in this session yet.",
+      "NothingToExport": "There is no session data to export yet."
+    },
+    "Tracker": {
+      "Title": "Spotlight Tracker",
+      "Kicker": "Character table time",
+      "SessionTitle": "Session title",
+      "DefaultSessionTitle": "Session {date}",
+      "DeletedActor": "Deleted character",
+      "RemovedFromRoster": "off roster",
+      "TotalHint": "Total time recorded across all characters",
+      "TimerHint": "Time remaining in the current spotlight slot",
+      "Remaining": "Remaining",
+      "Controls": "Tracker controls",
+      "Pause": "Pause",
+      "Resume": "Resume",
+      "Restart": "Start again",
+      "Next": "Next",
+      "Manage": "Roster",
+      "TimerDuration": "Spotlight timer",
+      "MinutesShort": "min",
+      "SecondsShort": "sec",
+      "ApplyTimer": "Apply",
+      "ApplyTimerHint": "Change the duration of the current and future slots",
+      "ResetTimer": "Restart",
+      "ResetTimerHint": "Reset the current character's timer to the full duration",
+      "Recorded": "Recorded",
+      "GiveSpotlight": "Give spotlight to this character",
+      "Now": "in focus",
+      "Time": "Time",
+      "TimeHint": "Total time this character has held the spotlight",
+      "Share": "Share",
+      "ShareHint": "This character's share of all recorded spotlight time",
+      "Activations": "Focus",
+      "ActivationsHint": "Number of times this character received the spotlight",
+      "MoveUp": "Move character up in the order",
+      "MoveDown": "Move character down in the order",
+      "EmptyTitle": "The roster is empty",
+      "EmptyHint": "Choose the assigned player characters to track in this session.",
+      "AddCharacters": "Choose characters",
+      "Export": "CSV",
+      "Archive": "End session",
+      "Reset": "Reset",
+      "ConfirmResetTitle": "Reset the current session?",
+      "ConfirmReset": "All recorded time in the current session will be deleted without being archived.",
+      "ConfirmArchiveTitle": "End the current session?",
+      "ConfirmArchive": "Results will be added to history and a new empty session will begin.",
+      "ConfirmDeleteHistoryTitle": "Delete this history entry?",
+      "ConfirmDeleteHistory": "The module cannot restore this entry after deletion."
+    },
+    "History": {
+      "Title": "Session history",
+      "Delete": "Delete entry"
+    },
+    "Roster": {
+      "Title": "Tracker Roster",
+      "Heading": "Session characters",
+      "Hint": "Only characters assigned to non-GM users are shown. Existing order is preserved and new characters are appended alphabetically.",
+      "Search": "Search by name, type, or player…",
+      "SelectAll": "Select all",
+      "SelectNone": "Clear selection",
+      "PlayerCharacter": "Assigned player character",
+      "NoActors": "No non-GM user has an assigned character.",
+      "Save": "Save roster"
+    },
+    "Export": {
+      "Character": "Character",
+      "TimeSeconds": "Time (seconds)",
+      "Time": "Time",
+      "Share": "Share (%)",
+      "Activations": "Spotlight activations"
+    }
+  }
+}
