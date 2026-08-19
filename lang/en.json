@@ -32,7 +32,7 @@
       "InvalidTimer": "Set a timer between 1 second and 180 minutes. Seconds must be from 0 to 59.",
       "TimerExpired": "{character}'s spotlight time has expired.",
       "NothingToArchive": "No spotlight time has been recorded in this session yet.",
-      "NothingToExport": "There is no session data to export yet."
+      "NothingToExport": "There is no session data to send to chat yet."
     },
     "Tracker": {
       "Title": "Spotlight Tracker",
@@ -71,7 +71,7 @@
       "EmptyTitle": "The roster is empty",
       "EmptyHint": "Choose the assigned player characters to track in this session.",
       "AddCharacters": "Choose characters",
-      "Export": "CSV",
+      "Export": "To chat",
       "Archive": "End session",
       "Reset": "Reset",
       "ConfirmResetTitle": "Reset the current session?",
@@ -98,10 +98,10 @@
     },
     "Export": {
       "Character": "Character",
-      "TimeSeconds": "Time (seconds)",
       "Time": "Time",
-      "Share": "Share (%)",
-      "Activations": "Spotlight activations"
+      "Share": "Share",
+      "Activations": "Turns",
+      "Total": "Total"
     }
   }
 }

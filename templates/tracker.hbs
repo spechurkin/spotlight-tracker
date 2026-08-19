@@ -1,223 +1,206 @@
 <form class="spotlight-tracker-shell" autocomplete="off">
-    <header class="spotlight-session-header">
-        <div class="spotlight-session-heading">
-            <span class="spotlight-kicker">{{localize "spotlight-tracker.Tracker.Kicker"}}</span>
-            {{#if canEdit}}
-                <input
-                        class="spotlight-session-title"
-                        type="text"
-                        name="sessionTitle"
-                        value="{{sessionTitle}}"
-                        placeholder="{{sessionTitlePlaceholder}}"
-                        maxlength="120"
-                        aria-label="{{localize 'spotlight-tracker.Tracker.SessionTitle'}}"
-                >
-            {{else}}
-                <h2 class="spotlight-session-title-readonly">{{#if
-                        sessionTitle}}{{sessionTitle}}{{else}}{{sessionTitlePlaceholder}}{{/if}}</h2>
-            {{/if}}
-        </div>
-        <div class="spotlight-countdown {{timerClass}}" data-timer-display
-             title="{{localize 'spotlight-tracker.Tracker.TimerHint'}}">
-            <i class="fas fa-hourglass-half" aria-hidden="true"></i>
-            <span>
+  <header class="spotlight-session-header">
+    <div class="spotlight-session-heading">
+      <span class="spotlight-kicker">{{localize "spotlight-tracker.Tracker.Kicker"}}</span>
+      {{#if canEdit}}
+      <input
+        class="spotlight-session-title"
+        type="text"
+        name="sessionTitle"
+        value="{{sessionTitle}}"
+        placeholder="{{sessionTitlePlaceholder}}"
+        maxlength="120"
+        aria-label="{{localize 'spotlight-tracker.Tracker.SessionTitle'}}"
+      >
+      {{else}}
+      <h2 class="spotlight-session-title-readonly">{{#if sessionTitle}}{{sessionTitle}}{{else}}{{sessionTitlePlaceholder}}{{/if}}</h2>
+      {{/if}}
+    </div>
+    <div class="spotlight-countdown {{timerClass}}" data-timer-display title="{{localize 'spotlight-tracker.Tracker.TimerHint'}}">
+      <i class="fas fa-hourglass-half" aria-hidden="true"></i>
+      <span>
         <small>{{localize "spotlight-tracker.Tracker.Remaining"}}</small>
         <strong data-timer-remaining>{{timerRemaining}}</strong>
       </span>
-        </div>
-    </header>
+    </div>
+  </header>
 
-    {{#if canEdit}}
-        <nav class="spotlight-primary-actions" aria-label="{{localize 'spotlight-tracker.Tracker.Controls'}}">
-            {{#if running}}
-                <button type="button" class="spotlight-action is-pause" data-action="pause">
-                    <i class="fas fa-pause" aria-hidden="true"></i>
-                    {{localize "spotlight-tracker.Tracker.Pause"}}
-                </button>
-            {{else}}
-                <button type="button" class="spotlight-action is-start" data-action="start"
-                        {{#unless canResume}}disabled{{/unless}}>
-                    <i class="fas fa-play" aria-hidden="true"></i>
-                    {{resumeLabel}}
-                </button>
-            {{/if}}
-            <button type="button" class="spotlight-action is-next" data-action="next"
-                    {{#unless hasRoster}}disabled{{/unless}}>
-                <i class="fas fa-forward-step" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.Next"}}
-            </button>
-            <button type="button" class="spotlight-action" data-action="manage">
-                <i class="fas fa-users-gear" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.Manage"}}
-            </button>
-        </nav>
-        <div class="spotlight-timer-settings">
+  {{#if canEdit}}
+  <nav class="spotlight-primary-actions" aria-label="{{localize 'spotlight-tracker.Tracker.Controls'}}">
+    {{#if running}}
+    <button type="button" class="spotlight-action is-pause" data-action="pause">
+      <i class="fas fa-pause" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Pause"}}
+    </button>
+    {{else}}
+    <button type="button" class="spotlight-action is-start" data-action="start" {{#unless canResume}}disabled{{/unless}}>
+      <i class="fas fa-play" aria-hidden="true"></i>
+      {{resumeLabel}}
+    </button>
+    {{/if}}
+    <button type="button" class="spotlight-action is-next" data-action="next" {{#unless hasRoster}}disabled{{/unless}}>
+      <i class="fas fa-forward-step" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Next"}}
+    </button>
+    <button type="button" class="spotlight-action" data-action="manage">
+      <i class="fas fa-users-gear" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Manage"}}
+    </button>
+  </nav>
+  <div class="spotlight-timer-settings">
     <span class="spotlight-timer-settings-label">
       <i class="fas fa-sliders" aria-hidden="true"></i>
-        {{localize "spotlight-tracker.Tracker.TimerDuration"}}
+      {{localize "spotlight-tracker.Tracker.TimerDuration"}}
     </span>
-            <label>
-                <input type="number" inputmode="numeric" data-timer-minutes value="{{timerMinutes}}" min="0" max="180"
-                       step="1">
-                <span>{{localize "spotlight-tracker.Tracker.MinutesShort"}}</span>
-            </label>
-            <span class="spotlight-timer-colon">:</span>
-            <label>
-                <input type="number" inputmode="numeric" data-timer-seconds value="{{timerSeconds}}" min="0" max="59"
-                       step="1">
-                <span>{{localize "spotlight-tracker.Tracker.SecondsShort"}}</span>
-            </label>
-            <button type="button" data-action="set-timer"
-                    title="{{localize 'spotlight-tracker.Tracker.ApplyTimerHint'}}">
-                <i class="fas fa-check" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.ApplyTimer"}}
-            </button>
-            <button type="button" data-action="reset-timer"
-                    title="{{localize 'spotlight-tracker.Tracker.ResetTimerHint'}}"
-                    {{#unless state.session.activeActorId}}disabled{{/unless}}>
-                <i class="fas fa-rotate-right" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.ResetTimer"}}
-            </button>
+    <label>
+      <input type="number" inputmode="numeric" data-timer-minutes value="{{timerMinutes}}" min="0" max="180" step="1">
+      <span>{{localize "spotlight-tracker.Tracker.MinutesShort"}}</span>
+    </label>
+    <span class="spotlight-timer-colon">:</span>
+    <label>
+      <input type="number" inputmode="numeric" data-timer-seconds value="{{timerSeconds}}" min="0" max="59" step="1">
+      <span>{{localize "spotlight-tracker.Tracker.SecondsShort"}}</span>
+    </label>
+    <button type="button" data-action="set-timer" title="{{localize 'spotlight-tracker.Tracker.ApplyTimerHint'}}">
+      <i class="fas fa-check" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.ApplyTimer"}}
+    </button>
+    <button type="button" data-action="reset-timer" title="{{localize 'spotlight-tracker.Tracker.ResetTimerHint'}}" {{#unless state.session.activeActorId}}disabled{{/unless}}>
+      <i class="fas fa-rotate-right" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.ResetTimer"}}
+    </button>
+  </div>
+  {{/if}}
+
+  {{#if hasParticipants}}
+  <ol class="spotlight-character-list">
+    {{#each participants}}
+    <li class="spotlight-character {{rowClass}}" data-actor-id="{{actorId}}">
+      <div class="spotlight-character-main">
+        {{#if canFocus}}
+        <button
+          type="button"
+          class="spotlight-portrait-button"
+          data-action="focus"
+          data-actor-id="{{actorId}}"
+          title="{{localize 'spotlight-tracker.Tracker.GiveSpotlight'}}"
+        >
+          <img src="{{img}}" alt="">
+          <span class="spotlight-live-dot" aria-hidden="true"></span>
+        </button>
+        {{else}}
+        <div class="spotlight-portrait-button is-readonly">
+          <img src="{{img}}" alt="">
+          <span class="spotlight-live-dot" aria-hidden="true"></span>
         </div>
+        {{/if}}
+
+        <div class="spotlight-character-copy">
+          <div class="spotlight-name-line">
+            <strong>{{name}}</strong>
+            {{#if running}}<span class="spotlight-now">{{localize "spotlight-tracker.Tracker.Now"}}</span>{{/if}}
+            {{#if removedLabel}}<span class="spotlight-removed">{{removedLabel}}</span>{{/if}}
+          </div>
+          <div class="spotlight-share-bar" data-share-bar="{{actorId}}" style="--spotlight-share: {{share}}%">
+            <span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.TimeHint'}}">
+        <span>{{localize "spotlight-tracker.Tracker.Time"}}</span>
+        <strong data-actor-elapsed="{{actorId}}">{{elapsed}}</strong>
+      </div>
+      <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.ShareHint'}}">
+        <span>{{localize "spotlight-tracker.Tracker.Share"}}</span>
+        <strong data-actor-share="{{actorId}}">{{share}}%</strong>
+      </div>
+      <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.ActivationsHint'}}">
+        <span>{{localize "spotlight-tracker.Tracker.Activations"}}</span>
+        <strong>{{turns}}</strong>
+      </div>
+
+      {{#if ../canEdit}}
+      <div class="spotlight-row-actions">
+        {{#if canFocus}}
+        <button type="button" data-action="focus" data-actor-id="{{actorId}}" title="{{localize 'spotlight-tracker.Tracker.GiveSpotlight'}}">
+          <i class="fas fa-crosshairs" aria-hidden="true"></i>
+        </button>
+        <button type="button" data-action="move-up" data-actor-id="{{actorId}}" title="{{localize 'spotlight-tracker.Tracker.MoveUp'}}" {{#unless canMoveUp}}disabled{{/unless}}>
+          <i class="fas fa-chevron-up" aria-hidden="true"></i>
+        </button>
+        <button type="button" data-action="move-down" data-actor-id="{{actorId}}" title="{{localize 'spotlight-tracker.Tracker.MoveDown'}}" {{#unless canMoveDown}}disabled{{/unless}}>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        {{/if}}
+      </div>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{else}}
+  <section class="spotlight-empty-state">
+    <i class="fas fa-people-group" aria-hidden="true"></i>
+    <h3>{{localize "spotlight-tracker.Tracker.EmptyTitle"}}</h3>
+    <p>{{localize "spotlight-tracker.Tracker.EmptyHint"}}</p>
+    {{#if canEdit}}
+    <button type="button" data-action="manage">
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.AddCharacters"}}
+    </button>
     {{/if}}
+  </section>
+  {{/if}}
 
-    {{#if hasParticipants}}
-        <ol class="spotlight-character-list">
-            {{#each participants}}
-                <li class="spotlight-character {{rowClass}}" data-actor-id="{{actorId}}">
-                    <div class="spotlight-character-main">
-                        {{#if canFocus}}
-                            <button
-                                    type="button"
-                                    class="spotlight-portrait-button"
-                                    data-action="focus"
-                                    data-actor-id="{{actorId}}"
-                                    title="{{localize 'spotlight-tracker.Tracker.GiveSpotlight'}}"
-                            >
-                                <img src="{{img}}" alt="">
-                                <span class="spotlight-live-dot" aria-hidden="true"></span>
-                            </button>
-                        {{else}}
-                            <div class="spotlight-portrait-button is-readonly">
-                                <img src="{{img}}" alt="">
-                                <span class="spotlight-live-dot" aria-hidden="true"></span>
-                            </div>
-                        {{/if}}
-
-                        <div class="spotlight-character-copy">
-                            <div class="spotlight-name-line">
-                                <strong>{{name}}</strong>
-                                {{#if running}}<span class="spotlight-now">{{localize
-                                        "spotlight-tracker.Tracker.Now"}}</span>{{/if}}
-                                {{#if removedLabel}}<span class="spotlight-removed">{{removedLabel}}</span>{{/if}}
-                            </div>
-                            <div class="spotlight-share-bar" data-share-bar="{{actorId}}"
-                                 style="--spotlight-share: {{share}}%">
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.TimeHint'}}">
-                        <span>{{localize "spotlight-tracker.Tracker.Time"}}</span>
-                        <strong data-actor-elapsed="{{actorId}}">{{elapsed}}</strong>
-                    </div>
-                    <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.ShareHint'}}">
-                        <span>{{localize "spotlight-tracker.Tracker.Share"}}</span>
-                        <strong data-actor-share="{{actorId}}">{{share}}%</strong>
-                    </div>
-                    <div class="spotlight-stat" title="{{localize 'spotlight-tracker.Tracker.ActivationsHint'}}">
-                        <span>{{localize "spotlight-tracker.Tracker.Activations"}}</span>
-                        <strong>{{turns}}</strong>
-                    </div>
-
-                    {{#if ../canEdit}}
-                        <div class="spotlight-row-actions">
-                            {{#if canFocus}}
-                                <button type="button" data-action="focus" data-actor-id="{{actorId}}"
-                                        title="{{localize 'spotlight-tracker.Tracker.GiveSpotlight'}}">
-                                    <i class="fas fa-crosshairs" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" data-action="move-up" data-actor-id="{{actorId}}"
-                                        title="{{localize 'spotlight-tracker.Tracker.MoveUp'}}"
-                                        {{#unless canMoveUp}}disabled{{/unless}}>
-                                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
-                                </button>
-                                <button type="button" data-action="move-down" data-actor-id="{{actorId}}"
-                                        title="{{localize 'spotlight-tracker.Tracker.MoveDown'}}"
-                                        {{#unless canMoveDown}}disabled{{/unless}}>
-                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                                </button>
-                            {{/if}}
-                        </div>
-                    {{/if}}
-                </li>
-            {{/each}}
-        </ol>
-    {{else}}
-        <section class="spotlight-empty-state">
-            <i class="fas fa-people-group" aria-hidden="true"></i>
-            <h3>{{localize "spotlight-tracker.Tracker.EmptyTitle"}}</h3>
-            <p>{{localize "spotlight-tracker.Tracker.EmptyHint"}}</p>
-            {{#if canEdit}}
-                <button type="button" data-action="manage">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
-                    {{localize "spotlight-tracker.Tracker.AddCharacters"}}
-                </button>
-            {{/if}}
-        </section>
-    {{/if}}
-
-    <footer class="spotlight-secondary-actions">
+  <footer class="spotlight-secondary-actions">
     <span class="spotlight-recorded-total" title="{{localize 'spotlight-tracker.Tracker.TotalHint'}}">
       <i class="fas fa-chart-simple" aria-hidden="true"></i>
-        {{localize "spotlight-tracker.Tracker.Recorded"}}: <strong data-total-elapsed>{{totalElapsed}}</strong>
+      {{localize "spotlight-tracker.Tracker.Recorded"}}: <strong data-total-elapsed>{{totalElapsed}}</strong>
     </span>
-        <button type="button" data-action="export" {{#unless hasParticipants}}disabled{{/unless}}>
-            <i class="fas fa-file-csv" aria-hidden="true"></i>
-            {{localize "spotlight-tracker.Tracker.Export"}}
-        </button>
-        {{#if canEdit}}
-            <button type="button" data-action="archive" {{#unless hasParticipants}}disabled{{/unless}}>
-                <i class="fas fa-box-archive" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.Archive"}}
-            </button>
-            <button type="button" class="is-danger" data-action="reset" {{#unless hasParticipants}}disabled{{/unless}}>
-                <i class="fas fa-rotate-left" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.Tracker.Reset"}}
-            </button>
-        {{/if}}
-    </footer>
-
-    {{#if hasHistory}}
-        <details class="spotlight-history">
-            <summary>
-                <i class="fas fa-clock-rotate-left" aria-hidden="true"></i>
-                {{localize "spotlight-tracker.History.Title"}} ({{history.length}})
-            </summary>
-            <div class="spotlight-history-list">
-                {{#each history}}
-                    <article class="spotlight-history-card">
-                        <header>
-                            <div>
-                                <strong>{{displayTitle}}</strong>
-                                <span>{{endedAtText}} · {{totalElapsed}}</span>
-                            </div>
-                            {{#if ../canEdit}}
-                                <button type="button" data-action="remove-history" data-history-id="{{id}}"
-                                        title="{{localize 'spotlight-tracker.History.Delete'}}">
-                                    <i class="fas fa-trash" aria-hidden="true"></i>
-                                </button>
-                            {{/if}}
-                        </header>
-                        <ul>
-                            {{#each entries}}
-                                <li><span>{{name}}</span><strong>{{elapsed}}</strong><small>{{share}}%</small></li>
-                            {{/each}}
-                        </ul>
-                    </article>
-                {{/each}}
-            </div>
-        </details>
+    <button type="button" data-action="export" {{#unless hasParticipants}}disabled{{/unless}}>
+      <i class="fas fa-message" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Export"}}
+    </button>
+    {{#if canEdit}}
+    <button type="button" data-action="archive" {{#unless hasParticipants}}disabled{{/unless}}>
+      <i class="fas fa-box-archive" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Archive"}}
+    </button>
+    <button type="button" class="is-danger" data-action="reset" {{#unless hasParticipants}}disabled{{/unless}}>
+      <i class="fas fa-rotate-left" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.Tracker.Reset"}}
+    </button>
     {{/if}}
+  </footer>
+
+  {{#if hasHistory}}
+  <details class="spotlight-history">
+    <summary>
+      <i class="fas fa-clock-rotate-left" aria-hidden="true"></i>
+      {{localize "spotlight-tracker.History.Title"}} ({{history.length}})
+    </summary>
+    <div class="spotlight-history-list">
+      {{#each history}}
+      <article class="spotlight-history-card">
+        <header>
+          <div>
+            <strong>{{displayTitle}}</strong>
+            <span>{{endedAtText}} · {{totalElapsed}}</span>
+          </div>
+          {{#if ../canEdit}}
+          <button type="button" data-action="remove-history" data-history-id="{{id}}" title="{{localize 'spotlight-tracker.History.Delete'}}">
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+          {{/if}}
+        </header>
+        <ul>
+          {{#each entries}}
+          <li><span>{{name}}</span><strong>{{elapsed}}</strong><small>{{share}}%</small></li>
+          {{/each}}
+        </ul>
+      </article>
+      {{/each}}
+    </div>
+  </details>
+  {{/if}}
 </form>
