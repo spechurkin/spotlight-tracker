@@ -1,6 +1,7 @@
 import { MODULE_ID, localize } from "./constants.js";
 import { SpotlightRosterApplication } from "./apps/roster-app.js";
 import { SpotlightTrackerApplication } from "./apps/tracker-app.js";
+import { addSpotlightSceneControl } from "./scene-controls.js";
 import { SpotlightStore } from "./store.js";
 
 const store = new SpotlightStore();
@@ -9,10 +10,7 @@ SpotlightTrackerApplication.configure({
   store,
   rosterApplication: SpotlightRosterApplication
 });
-SpotlightRosterApplication.configure({
-  store,
-  trackerApplication: SpotlightTrackerApplication
-});
+SpotlightRosterApplication.configure({ store });
 
 Hooks.once("init", () => {
   store.registerSettings({
@@ -31,7 +29,7 @@ Hooks.once("init", () => {
     }
   });
 
-  Hooks.on("renderSceneControls", addSceneControlButton);
+  Hooks.on("getSceneControlButtons", addSceneControlButton);
 });
 
 Hooks.once("ready", () => {
@@ -61,46 +59,25 @@ Hooks.once("ready", () => {
 
 for (const hook of ["createActor", "updateActor", "deleteActor"]) {
   Hooks.on(hook, () => {
-    if (SpotlightTrackerApplication.instance?.rendered) {
-      SpotlightTrackerApplication.instance.render(false);
+    if (SpotlightTrackerApplication.current?.rendered) {
+      void SpotlightTrackerApplication.current.render({ parts: ["main"] });
     }
-    if (SpotlightRosterApplication.instance?.rendered) {
-      SpotlightRosterApplication.instance.render(false);
+    if (SpotlightRosterApplication.current?.rendered) {
+      void SpotlightRosterApplication.current.render({ parts: ["main"] });
     }
   });
 }
 
 Hooks.on("updateUser", () => {
-  if (SpotlightRosterApplication.instance?.rendered) {
-    SpotlightRosterApplication.instance.render(false);
+  if (SpotlightRosterApplication.current?.rendered) {
+    void SpotlightRosterApplication.current.render({ parts: ["main"] });
   }
 });
 
-function addSceneControlButton(_application, html) {
-  if (!store.canView()) return;
-
-  const root = html?.[0] ?? html;
-  const controls = root?.matches?.(".main-controls")
-    ? root
-    : root?.querySelector?.(".main-controls");
-  if (!controls || controls.querySelector?.(`[data-control="${MODULE_ID}"]`)) return;
-
-  const button = globalThis.document?.createElement?.("li");
-  const icon = globalThis.document?.createElement?.("i");
-  if (!button || !icon) return;
-
-  const title = localize("Controls.Open");
-  button.classList.add("scene-control");
-  button.dataset.control = MODULE_ID;
-  button.dataset.tooltip = title;
-  button.setAttribute("aria-label", title);
-  icon.classList.add("fas", "fa-person-rays");
-  icon.setAttribute("aria-hidden", "true");
-  button.append(icon);
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    SpotlightTrackerApplication.open();
+function addSceneControlButton(controls) {
+  addSpotlightSceneControl(controls, {
+    title: localize("Controls.Open"),
+    visible: store.canView(),
+    open: () => SpotlightTrackerApplication.open()
   });
-  controls.append(button);
 }

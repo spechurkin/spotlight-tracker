@@ -26,7 +26,7 @@ export class SpotlightStore {
       hint: `${MODULE_ID}.Settings.PlayersCanView.Hint`,
       onChange: () => {
         this.notify();
-        ui.controls?.render?.(true);
+        void ui.controls?.render?.({ force: true });
       }
     });
 

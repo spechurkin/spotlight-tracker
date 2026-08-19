@@ -2,7 +2,7 @@
 
 **English** | [Русский](README.md)
 
-A standalone, system-agnostic module for Foundry VTT 12 that tracks how much
+A standalone, system-agnostic module for Foundry VTT 13 and 14 that tracks how much
 table time each character receives during a session.
 
 ## Features
@@ -21,8 +21,8 @@ table time each character receives during a session.
 
 ## Usage
 
-1. Click the dedicated character-in-the-spotlight icon in the scene controls on
-   the left, or open the tracker from the module settings.
+1. Click the dedicated character-in-the-spotlight control in the left scene
+   toolbar, or open the tracker from the module settings.
 2. Assign a character to each player user in Foundry, then click **Roster** and
    select the characters you need. NPCs and actors available to players only
    through Owner permission do not appear in this list.
@@ -60,6 +60,6 @@ Only the GM can invoke methods that change the tracker state.
 The focus-auditing concept and synchronization approach were inspired by
 [dmicher Spotlight Tools](https://github.com/dkubrow-dev/dmicher-spotlight-tools).
 This module was written from scratch specifically to track character table time
-in Foundry VTT 12. No original images, sounds, or source code files were copied.
+in Foundry VTT 13/14. No original images, sounds, or source code files were copied.
 
 License: MIT. See [NOTICE.md](NOTICE.md) for additional attribution.

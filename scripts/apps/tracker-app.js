@@ -15,10 +15,52 @@ import {
 } from "../model.js";
 import { buildSpotlightChatTable } from "../chat-export.js";
 
-export class SpotlightTrackerApplication extends FormApplication {
+const { ApplicationV2, DialogV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+export class SpotlightTrackerApplication extends HandlebarsApplicationMixin(ApplicationV2) {
   static store = null;
   static rosterApplication = null;
-  static instance = null;
+
+  static DEFAULT_OPTIONS = {
+    id: `${MODULE_ID}-window`,
+    classes: [MODULE_ID, "spotlight-tracker-window"],
+    tag: "form",
+    actions: {
+      archive: SpotlightTrackerApplication.onAction,
+      export: SpotlightTrackerApplication.onAction,
+      focus: SpotlightTrackerApplication.onAction,
+      manage: SpotlightTrackerApplication.onAction,
+      "move-down": SpotlightTrackerApplication.onAction,
+      "move-up": SpotlightTrackerApplication.onAction,
+      next: SpotlightTrackerApplication.onAction,
+      pause: SpotlightTrackerApplication.onAction,
+      "remove-history": SpotlightTrackerApplication.onAction,
+      reset: SpotlightTrackerApplication.onAction,
+      "reset-timer": SpotlightTrackerApplication.onAction,
+      "set-timer": SpotlightTrackerApplication.onAction,
+      start: SpotlightTrackerApplication.onAction
+    },
+    form: {
+      handler: SpotlightTrackerApplication.onSubmit,
+      submitOnChange: true,
+      closeOnSubmit: false
+    },
+    position: {
+      width: 660,
+      height: "auto"
+    },
+    window: {
+      icon: "fa-solid fa-person-rays",
+      title: `${MODULE_ID}.Tracker.Title`,
+      resizable: true
+    }
+  };
+
+  static PARTS = {
+    main: {
+      template: `modules/${MODULE_ID}/templates/tracker.hbs`
+    }
+  };
 
   static configure({ store, rosterApplication }) {
     this.store = store;
@@ -30,52 +72,43 @@ export class SpotlightTrackerApplication extends FormApplication {
       ui.notifications.warn(localize("Notifications.ViewDisabled"));
       return null;
     }
-    if (this.instance?.rendered) {
-      this.instance.bringToTop();
-      return this.instance;
+    const current = this.current;
+    if (current?.rendered) {
+      current.bringToFront();
+      return current;
     }
-    this.instance = new this();
-    this.instance.render(true);
-    return this.instance;
+    const application = new this();
+    void application.render({ force: true });
+    return application;
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: `${MODULE_ID}-window`,
-      classes: [MODULE_ID, "spotlight-tracker-window"],
-      template: `modules/${MODULE_ID}/templates/tracker.hbs`,
-      title: `${MODULE_ID}.Tracker.Title`,
-      width: 660,
-      height: "auto",
-      resizable: true,
-      closeOnSubmit: false,
-      submitOnChange: false
-    });
+  static get current() {
+    return foundry.applications.instances.get(`${MODULE_ID}-window`) ?? null;
   }
 
   constructor(options = {}) {
-    super({}, options);
+    super(options);
     this.store = this.constructor.store;
     this.tickHandle = null;
     this.expiringRevision = null;
-    this.unsubscribe = this.store?.subscribe(() => this.onStoreChanged()) ?? null;
-    this.constructor.instance = this;
+    this.unsubscribe = null;
   }
 
   get title() {
     return localize("Tracker.Title");
   }
 
-  render(force = false, options = {}) {
+  _canRender(options) {
+    const canRender = super._canRender(options);
+    if (canRender === false) return false;
     if (!this.store?.canView()) {
       ui.notifications.warn(localize("Notifications.ViewDisabled"));
-      return this;
+      return false;
     }
-    return super.render(force, options);
   }
 
-  async getData(options = {}) {
-    const context = await super.getData(options);
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
     const state = this.store.getState();
     const now = this.store.now();
     const totalMs = getTotalElapsed(state.session, now);
@@ -157,31 +190,33 @@ export class SpotlightTrackerApplication extends FormApplication {
     };
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  async _onRender(context, options) {
+    await super._onRender(context, options);
     this.startTicking();
-
-    html.find("[data-action]").on("click", (event) => {
-      event.preventDefault();
-      void this.handleAction(event.currentTarget);
-    });
-
-    html.find("[name='sessionTitle']").on("change", (event) => {
-      void this.store.dispatch("SET_TITLE", { title: event.currentTarget.value });
-    });
   }
 
-  async _updateObject(_event, formData) {
-    if (!this.store.canEdit()) return;
-    await this.store.dispatch("SET_TITLE", { title: formData.sessionTitle ?? "" });
+  async _onFirstRender(context, options) {
+    await super._onFirstRender(context, options);
+    this.unsubscribe ??= this.store?.subscribe(() => this.onStoreChanged()) ?? null;
   }
 
-  async close(options = {}) {
+  static async onSubmit(event, _form, formData) {
+    const isTitleChange = event.target?.name === "sessionTitle";
+    const isFormSubmit = event.type === "submit";
+    if ((!isTitleChange && !isFormSubmit) || !this.store.canEdit()) return;
+    await this.store.dispatch("SET_TITLE", { title: formData.object.sessionTitle ?? "" });
+  }
+
+  async _onClose(options) {
     this.stopTicking();
     this.unsubscribe?.();
     this.unsubscribe = null;
-    if (this.constructor.instance === this) this.constructor.instance = null;
-    return super.close(options);
+    await super._onClose(options);
+  }
+
+  static async onAction(event, target) {
+    event.preventDefault();
+    await this.handleAction(target);
   }
 
   async handleAction(element) {
@@ -241,7 +276,7 @@ export class SpotlightTrackerApplication extends FormApplication {
   }
 
   onStoreChanged() {
-    if (this.rendered) this.render(false);
+    if (this.rendered) void this.render({ parts: ["main"] });
   }
 
   startTicking() {
@@ -264,7 +299,7 @@ export class SpotlightTrackerApplication extends FormApplication {
     const remainingMs = state.session.activeActorId
       ? getTimerRemaining(state, now)
       : state.timerDurationMs;
-    const root = this.element?.[0] ?? this.element;
+    const root = this.element;
     if (!root?.querySelectorAll) return;
 
     for (const element of root.querySelectorAll("[data-actor-elapsed]")) {
@@ -298,7 +333,7 @@ export class SpotlightTrackerApplication extends FormApplication {
   }
 
   async setTimerDurationFromForm() {
-    const root = this.element?.[0] ?? this.element;
+    const root = this.element;
     const minutes = Number(root?.querySelector("[data-timer-minutes]")?.value ?? 0);
     const seconds = Number(root?.querySelector("[data-timer-seconds]")?.value ?? 0);
     const durationMs = ((minutes * 60) + seconds) * 1000;
@@ -365,13 +400,17 @@ export class SpotlightTrackerApplication extends FormApplication {
   }
 
   async confirm(titleKey, contentKey) {
-    return Dialog.confirm({
-      title: localize(titleKey),
+    return Boolean(await DialogV2.confirm({
+      window: {
+        title: localize(titleKey)
+      },
       content: `<p>${localize(contentKey)}</p>`,
-      yes: () => true,
-      no: () => false,
-      defaultYes: false
-    });
+      no: {
+        default: true
+      },
+      rejectClose: false,
+      modal: true
+    }));
   }
 
   defaultSessionTitle(timestamp) {
