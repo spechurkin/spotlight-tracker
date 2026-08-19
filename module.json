@@ -2,10 +2,10 @@
   "id": "spotlight-tracker",
   "title": "Spotlight Tracker | Трекер спотлайта",
   "description": "A system-agnostic Foundry VTT 12 module for tracking how much table spotlight each character receives during a game session.",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "authors": [
     {
-      "name": "Spotlight Tracker contributors"
+      "name": "HoloLight17"
     }
   ],
   "compatibility": {
@@ -32,7 +32,7 @@
     }
   ],
   "url": "https://github.com/spechurkin/spotlight-tracker",
-  "manifest": "https://github.com/spechurkin/spotlight-tracker/releases/latest/download/module.json",
-  "download": "https://github.com/spechurkin/spotlight-tracker/releases/latest/download/spotlight-tracker.zip",
+  "manifest": "https://github.com/spechurkin/spotlight-tracker/releases/1.0.0/download/module.json",
+  "download": "https://github.com/spechurkin/spotlight-tracker/releases/1.0.0/download/spotlight-tracker.zip",
   "readme": "README.md"
 }
